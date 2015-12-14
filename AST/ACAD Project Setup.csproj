@@ -34,19 +34,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>bin\Release\accoremgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>References\accoremgd.dll</HintPath>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>bin\Release\acdbmgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>References\acdbmgd.dll</HintPath>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>bin\Release\acmgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>References\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2013\AdWindows.dll</HintPath>
+      <HintPath>References\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
