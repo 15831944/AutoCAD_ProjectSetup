@@ -86,7 +86,7 @@ namespace ExtensionMethods
                 
         }
 
-        public static void Viewport_Create(this Layout layout, Viewport_Info vpinfo, Document doc)
+        public static void Viewport_Create(this Layout layout, Project_Setup.Viewport vpinfo, Document doc)
         {
             Database db = doc.Database;
             Editor ed = doc.Editor;
@@ -110,7 +110,7 @@ namespace ExtensionMethods
                     doc.LayerManagement("Lock", "x-vport", false);
 
                     // create a new viewport
-                    Viewport vp = new Viewport();
+                    Autodesk.AutoCAD.DatabaseServices.Viewport vp = new Autodesk.AutoCAD.DatabaseServices.Viewport();
                     
                     vp.Width = vpinfo.Width;
                     vp.Height = vpinfo.Height;

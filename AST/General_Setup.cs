@@ -73,8 +73,6 @@ namespace General_Setup
             TotalNumIdens++;          
         }
     }
-
-
 }
 
  

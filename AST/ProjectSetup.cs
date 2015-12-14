@@ -40,50 +40,8 @@ namespace Project_Setup
             this.Add(IdentityNumbers, xinfo);
         }
     }
-    /// <summary>
-    /// A class which holds all the data necessary to recreate a viewport
-    /// </summary>
-    public class Viewport_Info
-    {
-        //creates the specific fields for this class
-        public StandardScaleType StandardScale;
-        public double CustomScale;
-        public Point3d CenterPoint;
-        public Point2d ViewCenter;
-        public double Width;
-        public double Height;
-        public double ViewHeight;
-        public Point3d ViewTarget;
-        public IEnumerable<ObjectId> FrznLayers;
 
-        public Viewport_Info(
-            StandardScaleType Standard_Scale,
-            double Custom_Scale,
-            Point3d Center_Point,
-            Point2d View_Center,
-            double width,
-            double height,
-            double View_Height,
-            Point3d View_Target,
-            ObjectIdCollection Frzn_Layers)
-        {
-            //assigns the parameters added to the fields for this class
-            StandardScale = Standard_Scale;
-            CustomScale = Custom_Scale;
-            CenterPoint = Center_Point;
-            ViewCenter = View_Center;
-            Width = width;
-            Height = height;
-            ViewHeight = View_Height;
-            ViewTarget = View_Target;
-            FrznLayers = from ObjectId x in Frzn_Layers
-                         where !x.IsNull
-                         select x;
-        }
-
-    }
-
-    public class DictOfViewPorts : Dictionary<Layout, List<Viewport_Info>>
+    public class DictOfViewPorts : Dictionary<Layout, List<Viewport>>
     {
         public int IdentityNumbers;
         public static int TotalNumIdens;
@@ -95,11 +53,11 @@ namespace Project_Setup
             IdentityNumbers = TotalNumIdens;
         }
 
-        public DictOfViewPorts(Viewport_Info vpinfo)
+        public DictOfViewPorts(Viewport vpinfo)
         {
             TotalNumIdens++;
             IdentityNumbers = TotalNumIdens;
-            List<Viewport_Info> list_vpinfo = new List<Viewport_Info>();
+            List<Viewport> list_vpinfo = new List<Viewport>();
             list_vpinfo.Add(vpinfo);
             this.Add(Layout, list_vpinfo);
         }
@@ -455,11 +413,11 @@ namespace Project_Setup
         /// finds and all viewports in the same Layout and returns their relevant info
         /// </summary>
         /// <param name="tblk">TitleBlock which should be used</param>
-        public static List<Viewport_Info> Xref_ViewPortInfo(ObjectId tblk_layid)
+        public static List<Viewport> Xref_ViewPortInfo(ObjectId tblk_layid)
         {
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
-            List<Viewport_Info> list_vpinfo = new List<Viewport_Info>();
+            List<Viewport> list_vpinfo = new List<Viewport>();
 
             if (!tblk_layid.IsNull)
             {
@@ -479,8 +437,8 @@ namespace Project_Setup
                             numofvps++;
                             Viewport vp = v.GetObject(OpenMode.ForRead) as Viewport;
 
-                            Viewport_Info vpinfo =
-                                new Viewport_Info(
+                            Viewport vpinfo =
+                                new Viewport(
                                     vp.StandardScale,
                                     vp.CustomScale,
                                     vp.CenterPoint,
@@ -699,7 +657,7 @@ namespace Project_Setup
                 //get the info on all viewports in all layouts
                 foreach (Layout layout in listoflayouts)
                 {
-                    List<Viewport_Info> list_vpinfo = Xref_ViewPortInfo(layout.ObjectId);
+                    List<Viewport> list_vpinfo = Xref_ViewPortInfo(layout.ObjectId);
                     vp_dict.Add(layout, list_vpinfo);
                 }
             }
@@ -978,7 +936,7 @@ namespace Project_Setup
                             newlaymgr.RenameLayout(curlay.LayoutName, "Work");
 
                             // for each set of viewport info in the List of VP info
-                            foreach (Viewport_Info vpinfo in vp_dict[l])
+                            foreach (Viewport vpinfo in vp_dict[l])
                             {
                                 // create a new vp with the corresponding info
                                 curlay.Viewport_Create(vpinfo, newdoc);
